@@ -1,4 +1,4 @@
-package com.group21.NutriFit.system;
+package com.group21.NutriFit.System;
 
 public class Profile {
     private String displayName;

@@ -9,9 +9,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("NutriFit");
-        stage.setResizable(false);
-        stage.setHeight(810);
-        stage.setWidth(1440);
+        stage.setMinHeight(810);
+        stage.setMinWidth(1440);
         stage.show();
     }
 
