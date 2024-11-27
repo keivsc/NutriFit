@@ -1,4 +1,4 @@
-package com.group21.NutriFit.system;
+package com.group21.NutriFit.System;
 
 public class User {
     private int userID;
@@ -11,5 +11,9 @@ public class User {
     private Profile profile;
     public User(String email){
 
+    }
+
+    public Profile getProfile() {
+        return this.profile;
     }
 }

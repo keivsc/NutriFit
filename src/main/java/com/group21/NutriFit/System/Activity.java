@@ -1,4 +1,4 @@
-package com.group21.NutriFit.system;
+package com.group21.NutriFit.System;
 
 public class Activity {
     private int activityID;
