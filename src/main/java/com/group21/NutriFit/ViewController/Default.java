@@ -1,6 +1,6 @@
-package com.group21.NutriFit.Scenes;
+package com.group21.NutriFit.ViewController;
 
-import com.group21.NutriFit.System.User;
+import com.group21.NutriFit.Model.User;
 
 public class Default {
     private User user;
