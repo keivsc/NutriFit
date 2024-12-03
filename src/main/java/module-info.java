@@ -9,4 +9,6 @@ module com.group21.NutriFit {
     opens com.group21.NutriFit.database to javafx.fxml;
     exports com.group21.NutriFit.ViewController;
     opens com.group21.NutriFit.ViewController to javafx.fxml;
+    exports com.group21.NutriFit.utils;
+    opens com.group21.NutriFit.utils to javafx.fxml;
 }
