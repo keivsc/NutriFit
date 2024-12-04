@@ -2,49 +2,44 @@
 
 ### To-Do List (Desktop App)
 #### Front End
-- [ ] Landing
-- [ ] Home
-- [ ] Profile
-- [ ] Activity
-- [ ] Goals
-- [ ] Nutrition
-- [ ] AI Nutrition Identifier
-- [ ] Integration with Backend
+ - [ ] Landing
+ - [ ] Home
+ - [ ] Profile
+ - [ ] Activity
+ - [ ] Goals
+ - [ ] Nutrition
+ - [ ] AI Nutrition Identifier
+ - [ ] Integration with Backend
 #### Backend
-- [ ] Account Login
-- [ ] Account Creation
-- [ ] Account Settings
-- [ ] Activity
-- [ ] Goals
-- [ ] Footstep Tracker
-- [ ] Nutrition
-- [ ] API Calls to LogMeal & Calorie Ninja
-- [ ] Database (JAVA IO)
-- [ ] Database ( Atlas )
-- [x] Encryption
+ - [ ] Account Login
+ - [ ] Account Creation
+ - [ ] Account Settings
+ - [ ] Encryption
+ - [ ] API Calls to LogMeal & Calorie Ninja
+ - [ ] Activity
+ - [ ] Goals
+ - [ ] Footstep Tracker
+ - [ ] Nutrition
 
 #
 
 ### To-Do List (Mobile App)
 #### Front End
-- [ ] Landing
-- [ ] Home
-- [ ] Profile
-- [ ] Activity
-- [ ] Goals
-- [ ] Nutrition
-- [ ] AI Nutrition Identifier
-- [ ] Integration with Backend
+ - [ ] Landing
+ - [ ] Home
+ - [ ] Profile
+ - [ ] Activity
+ - [ ] Goals
+ - [ ] Nutrition
+ - [ ] AI Nutrition Identifier
+ - [ ] Integration with Backend
 #### Backend
-- [ ] Account Login
-- [ ] Account Creation
-- [ ] Account Settings
-- [ ] Activity
-- [ ] Goals
-- [ ] Footstep Tracker
-- [ ] Nutrition
-- [ ] API Calls to LogMeal & Calorie Ninja
-- [ ] Database (CORE DATA)
-- [ ] Database ( Atlas )
-- [x] Encryption
-s
+ - [ ] Account Login
+ - [ ] Account Creation
+ - [ ] Account Settings
+ - [ ] Encryption
+ - [ ] API Calls to LogMeal & Calorie Ninja
+ - [ ] Activity
+ - [ ] Goals
+ - [ ] Footstep Tracker
+ - [ ] Nutrition
