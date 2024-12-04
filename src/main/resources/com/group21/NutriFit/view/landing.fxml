@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.group21.NutriFit.ViewController.LandingController">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="475.0" prefWidth="593.0" spacing="20.0" style="-fx-background-color: #2444A5;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.group21.NutriFit.ViewController.LandingController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <Label fx:id="welcomeText"/>
-    <Button fx:id="registerButton" text="Register" onAction="#onRegisterClick"/>
-    <Button text="Login" onAction="#onLoginClick"/>
+   <AnchorPane>
+      <children>
+         <ImageView fitHeight="336.82" fitWidth="205.0" layoutX="152.0" layoutY="-98.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@src/icon.png" />
+            </image>
+         </ImageView>
+         <TextField layoutX="192.0" layoutY="100.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-background-insets:: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-text-fill: white;" text="Username" />
+         <TextField layoutX="195.0" layoutY="138.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white;" text="Password" />
+      </children>
+   </AnchorPane>
+    <Label fx:id="welcomeText" />
+    <Button onAction="#onRegisterClick" text="Register" />
+    <Button onAction="#onLoginClick" text="Login" />
 </VBox>
