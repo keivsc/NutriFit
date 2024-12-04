@@ -1,4 +1,4 @@
-package com.group21.NutriFit;
+package com.group21.NutriFit.utils;
 import java.io.*;
 
 public class Utils {

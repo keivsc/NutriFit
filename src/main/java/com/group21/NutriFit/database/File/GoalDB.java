@@ -1,9 +1,10 @@
 package com.group21.NutriFit.database.File;
 
+import com.group21.NutriFit.Model.Goal;
 import com.group21.NutriFit.database.Database;
 
-public class Activity extends Database {
-    private String filePath = "./users.txt";
+public class GoalDB<Goal> implements Database<Goal> {
+    private String filePath = "./users.dat";
 
     @Override
     public void load() {
@@ -11,12 +12,12 @@ public class Activity extends Database {
     }
 
     @Override
-    public boolean add() {
+    public boolean add(Goal item) {
         return false;
     }
 
     @Override
-    public boolean remove() {
+    public boolean remove(Goal item) {
         return false;
     }
 }
