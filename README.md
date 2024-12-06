@@ -14,7 +14,7 @@
  - [ ] Account Login
  - [ ] Account Creation
  - [ ] Account Settings
- - [ ] Encryption
+ - [X] Encryption
  - [ ] API Calls to LogMeal & Calorie Ninja
  - [ ] Activity
  - [ ] Goals
