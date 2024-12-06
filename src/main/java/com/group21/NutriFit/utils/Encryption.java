@@ -21,6 +21,19 @@ public class Encryption {
         return keyPairGenerator.generateKeyPair();
     }
 
+    public static String encrypt(PublicKey publicKey, String data) throws Exception{
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+
+        return Base64.getEncoder().encodeToString(cipher.doFinal(data.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    public static String decrypt(PrivateKey privateKey, String data) throws Exception{
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        return new String(cipher.doFinal(Base64.getDecoder().decode(data)), StandardCharsets.UTF_8);
+    }
+
     public static String encrypt(String publicKeyString, String data) throws Exception{
         PublicKey publicKey = stringToPublic(publicKeyString);
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
@@ -44,7 +57,7 @@ public class Encryption {
     }
 
     public static PrivateKey stringToPrivate(String privateKeyString) throws Exception{
-        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyString.getBytes());
+        byte[] privateKeyBytes = convertStringToByteArray(privateKeyString);
         PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return keyFactory.generatePrivate(privateKeySpec);
@@ -106,6 +119,24 @@ public class Encryption {
             System.out.println("Error Hashing");
         };
         return null;
+    }
+
+    public static byte[] convertStringToByteArray(String byteArrayString) {
+        // Remove the first and last characters (assuming they are commas or other non-byte characters)
+        byteArrayString = byteArrayString.substring(1, byteArrayString.length() - 1);
+
+        // Split the remaining string by comma and space
+        String[] byteStrings = byteArrayString.split(", ");
+
+        // Create a byte array of the correct length
+        byte[] byteArray = new byte[byteStrings.length];
+
+        // Convert each string value to a byte and store it in the byte array
+        for (int i = 0; i < byteStrings.length; i++) {
+            byteArray[i] = (byte) Integer.parseInt(byteStrings[i]);
+        }
+
+        return byteArray;
     }
 
 }

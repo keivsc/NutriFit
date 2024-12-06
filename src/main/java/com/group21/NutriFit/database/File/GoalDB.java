@@ -6,10 +6,6 @@ import com.group21.NutriFit.database.Database;
 public class GoalDB<Goal> implements Database<Goal> {
     private String filePath = "./users.dat";
 
-    @Override
-    public void load() {
-
-    }
 
     @Override
     public boolean add(Goal item) {

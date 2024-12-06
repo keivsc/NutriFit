@@ -1,6 +1,7 @@
 module com.group21.NutriFit {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.logging;
 
 
     opens com.group21.NutriFit to javafx.fxml;
