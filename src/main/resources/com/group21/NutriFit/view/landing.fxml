@@ -8,23 +8,41 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="475.0" prefWidth="593.0" spacing="20.0" style="-fx-background-color: #2444A5;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.group21.NutriFit.ViewController.LandingController">
+<VBox alignment="CENTER" prefHeight="810.0" prefWidth="1440.0" spacing="20.0" style="-fx-background-color: #2444A5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group21.NutriFit.ViewController.LandingController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <AnchorPane>
+   <AnchorPane prefHeight="500.0" prefWidth="200.0">
       <children>
-         <ImageView fitHeight="336.82" fitWidth="205.0" layoutX="152.0" layoutY="-98.0" pickOnBounds="true" preserveRatio="true">
+         <ImageView fitHeight="801.0" fitWidth="899.0" layoutX="236.0" layoutY="-242.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
             <image>
                <Image url="@src/icon.png" />
             </image>
          </ImageView>
-         <TextField layoutX="192.0" layoutY="100.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-background-insets:: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-text-fill: white;" text="Username" />
-         <TextField layoutX="195.0" layoutY="138.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white;" text="Password" />
+         <TextField layoutX="466.0" layoutY="259.0" prefHeight="70.0" prefWidth="450.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white;" text="PASSWORD">
+            <font>
+               <Font size="19.0" />
+            </font>
+         </TextField>
+         <TextField layoutX="466.0" layoutY="163.0" prefHeight="70.0" prefWidth="450.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white;" text="USERNAME">
+            <font>
+               <Font size="19.0" />
+            </font>
+         </TextField>
+          <Button layoutX="466.0" layoutY="351.0" minHeight="70.0" minWidth="452.0" onAction="#onLoginClick" style="-fx-background-color: FFFFFF;" text="LOGIN" textFill="#162b80" />
+          <Button layoutX="521.0" layoutY="440.0" onAction="#onRegisterClick" prefHeight="24.0" prefWidth="85.0" style="-fx-background-color: transparent;" text="Sign up" textFill="WHITE">
+            <font>
+               <Font size="19.0" />
+            </font>
+         </Button>
+         <Button layoutX="725.0" layoutY="440.0" onAction="#onRegisterClick" style="-fx-background-color: transparent;" text="Forgot Password?" textFill="WHITE">
+            <font>
+               <Font size="19.0" />
+            </font>
+         </Button>
       </children>
    </AnchorPane>
     <Label fx:id="welcomeText" />
-    <Button onAction="#onRegisterClick" text="Register" />
-    <Button onAction="#onLoginClick" text="Login" />
 </VBox>
