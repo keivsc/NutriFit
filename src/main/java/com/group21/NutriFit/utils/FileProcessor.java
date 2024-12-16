@@ -10,6 +10,7 @@ public class FileProcessor {
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor(); // Executor for async operations
     private static final BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<>(); // Queue for write tasks
+    private static final String dataPath = System.getProperty("user.dir")+"\\data\\";
 
     // Constructor initializes a background thread that processes the queued tasks
     public FileProcessor() {
@@ -27,9 +28,22 @@ public class FileProcessor {
         });
     }
 
-    public void createFile(String filePath){
+    public void createFile(String filePath, Boolean override) {
         try {
-            (new File(filePath)).createNewFile();
+            if (!override) {
+                filePath = dataPath + filePath;
+                System.out.println(filePath);
+                File dir = new File(dataPath);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+            }
+            File file = new File(filePath);
+            if (file.createNewFile()) {
+                System.out.println("File created: " + filePath);
+            } else {
+                System.out.println("File already exists or could not be created: " + filePath);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -37,6 +51,7 @@ public class FileProcessor {
 
     // Synchronously read the file
     public List<String> readFile(String filePath) {
+        filePath = dataPath + filePath;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             StringBuilder data = new StringBuilder();
@@ -55,10 +70,12 @@ public class FileProcessor {
     // Queued asynchronous write to file
     public void writeFileAsync(String filePath, String data) {
         // Create a task to write data to the file
+        String fullFilePath = dataPath + filePath; // Compute full file path before the lambda
+
         Runnable writeTask = () -> {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fullFilePath))) {
                 writer.write(data);
-                System.out.println("Data written to file: " + filePath);
+                System.out.println("Data written to file: " + fullFilePath);
             } catch (IOException e) {
                 System.err.println("Error writing to file: " + e.getMessage());
             }
@@ -66,35 +83,21 @@ public class FileProcessor {
 
         // Add the task to the queue
         try {
-            taskQueue.put(writeTask);  // This will block if the queue is full
+            taskQueue.put(writeTask); // This will block if the queue is full
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt(); // Preserve interrupt status
             System.err.println("Error queuing the task: " + e.getMessage());
         }
     }
 
+
     public void writeFile(String filePath, String data){
+        filePath = dataPath + filePath;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(data);
             System.out.println("Data written to file: " + filePath);
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
-        }
-    }
-
-    public List<String> readAllLines(String filePath) {
-        try(BufferedReader reader = new BufferedReader(new FileReader(filePath))){
-            String line;
-            StringBuilder data= new StringBuilder();
-            while((line = reader.readLine()) != null){
-                data.append(line);
-            }
-            String decodedData = base64Decode(data.toString());
-            return List.of(decodedData.split("\n"));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 

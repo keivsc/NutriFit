@@ -21,7 +21,7 @@ public class Encryption {
 
     private static String generateSalt() {
         FileProcessor fileProcessor = new FileProcessor();
-        List<String> data = new ArrayList<>(fileProcessor.readAllLines("./keys.dat"));
+        List<String> data = new ArrayList<>(fileProcessor.readFile("./keys.dat"));
         if (!data.isEmpty() && data.getFirst() != null) {
             return data.getFirst(); // Return the existing salt
         } else {
@@ -42,7 +42,7 @@ public class Encryption {
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
         FileProcessor fileProcessor = new FileProcessor();
-        List<String> data = new ArrayList<>(fileProcessor.readAllLines("./keys.dat"));
+        List<String> data = new ArrayList<>(fileProcessor.readFile("./keys.dat"));
         data.add(hashText(password));
         data.add(encryptKey(email, password, publicKey.toString()));
         data.add(encryptKey(email, password, privateKey.toString()));
