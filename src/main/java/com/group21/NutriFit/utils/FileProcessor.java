@@ -4,13 +4,15 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class FileQueueProcessor {
+import static com.group21.NutriFit.utils.Utils.base64Decode;
+
+public class FileProcessor {
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor(); // Executor for async operations
     private static final BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<>(); // Queue for write tasks
 
     // Constructor initializes a background thread that processes the queued tasks
-    public FileQueueProcessor() {
+    public FileProcessor() {
         // Start a background thread to process tasks in the queue
         executor.submit(() -> {
             while (true) {
@@ -23,6 +25,14 @@ public class FileQueueProcessor {
                 }
             }
         });
+    }
+
+    public void createFile(String filePath){
+        try {
+            (new File(filePath)).createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Synchronously read the file
@@ -63,6 +73,36 @@ public class FileQueueProcessor {
         }
     }
 
+    public void writeFile(String filePath, String data){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(data);
+            System.out.println("Data written to file: " + filePath);
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
+    public List<String> readAllLines(String filePath) {
+        try(BufferedReader reader = new BufferedReader(new FileReader(filePath))){
+            String line;
+            StringBuilder data= new StringBuilder();
+            while((line = reader.readLine()) != null){
+                data.append(line);
+            }
+            String decodedData = base64Decode(data.toString());
+            return List.of(decodedData.split("\n"));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public FileData parseData(String data){
+        List<String> splitData = List.of(data.split("\\[.*?\\]"));
+        return new FileData(splitData);
+    }
+
     // Optional: Shutdown executor after all tasks are done (if needed)
     public void shutdown() {
         executor.shutdown();
@@ -74,4 +114,40 @@ public class FileQueueProcessor {
             executor.shutdownNow();
         }
     }
+
+    public static class FileData extends ArrayList<String>{
+        private List<String> identifier = new ArrayList<>();
+        private List<String> data = new ArrayList<>();
+
+
+        public FileData(List<String> data){
+            super(data);
+            this.identifier = List.of(data.getFirst().split(", "));
+            this.data = List.of(data.getLast().split("\n"));
+        }
+
+        public List<String> getAllData() {
+            return this.data;
+        }
+
+        public List<String> getAllID(){
+            return this.identifier;
+        }
+
+        public String getDataByID(String id){
+            return this.data.get(identifier.indexOf(id));
+        }
+
+        public boolean checkID(String id){
+            return this.identifier.contains(id);
+        }
+    }
+
+    public static void main(String[] args){
+        FileData fileData = new FileData(List.of(new String[]{"1, 2, 3", "a\nb\nc"}));
+        System.out.println(fileData.getFirst());
+        System.out.println(fileData.getDataByID("1"));
+    }
+
+
 }
