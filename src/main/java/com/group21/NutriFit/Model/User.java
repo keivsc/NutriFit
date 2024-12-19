@@ -1,89 +1,30 @@
 package com.group21.NutriFit.Model;
 
-import com.group21.NutriFit.utils.Encryption;
-
-import java.security.KeyPair;
-import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.PrivateKey;
 
-public class User {
-    private int userID;
+public class User extends BaseModel<User> {
     private String name;
     private String email;
     private int pNo;
     private int height;
     private int weight;
     private char sex;
-    private Profile profile;
+    private byte[] profilePic;
+    private boolean isPublic;
     private PublicKey publicKey;
     private PrivateKey privateKey;
 
-
-
-    public User(int userID, String name, String email, int pNo, int height, int weight, char sex, Profile profile){
-        setEmail(email);
-        setHeight(height);
-        setName(name);
-        setpNo(pNo);
-        setWeight(weight);
-        setProfile(profile);
-        setUserID(userID);
-    }
-
-    public User(String userData) {
-        userData = userData.substring(1, userData.length() - 1).trim();
-        String[] lines = userData.split(",\n");
-
-
-        for (String line : lines) {
-            String[] keyValue = line.split(": ", 2);
-            String key = keyValue[0].trim().replace("\"", "");
-            String value = keyValue[1].trim().replace("\"", "");
-
-            switch (key) {
-                case "userID":
-                    this.userID = Integer.parseInt(value);
-                    break;
-                case "name":
-                    this.name = value;
-                    break;
-                case "email":
-                    this.email = value;
-                    break;
-                case "pNo":
-                    this.pNo = Integer.parseInt(value);
-                    break;
-                case "height":
-                    this.height = Integer.parseInt(value);
-                    break;
-                case "weight":
-                    this.weight = Integer.parseInt(value);
-                    break;
-                case "sex":
-                    this.sex = value.charAt(0);
-                    break;
-//                case "profile":
-//                    this.profile = new Profile(value); // Profile parsing needs to be handled
-//                    break;
-                case "publicKey":
-                    if (!value.equals("null")) {
-                        try {
-                            this.publicKey = Encryption.stringToPublic(value);
-                        } catch (Exception e) {
-                            throw new IllegalArgumentException("Error parsing public key", e);
-                        }
-                    }
-                    break;
-            }
-        }
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public User(int userID, String name, String email, int pNo, int height, int weight, char sex, byte[] profilePic, boolean isPublic) {
+        super(userID);
+        this.name = name;
+        this.email = email;
+        this.pNo = pNo;
+        this.height = height;
+        this.weight = weight;
+        this.sex = sex;
+        this.profilePic = profilePic;
+        this.isPublic = isPublic;
     }
 
     public String getName() {
@@ -134,39 +75,82 @@ public class User {
         this.sex = sex;
     }
 
-    public Profile getProfile() {
-        return this.profile;
+    public byte[] getProfilePic() {
+        return profilePic;
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setProfilePic(byte[] profilePic) {
+        this.profilePic = profilePic;
     }
 
-    public PublicKey getPublic() {
+    public boolean getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public PublicKey getPublicKey() {
         return publicKey;
     }
 
-    public PrivateKey getPrivate(){
+    public void setPublicKey(PublicKey publicKey) {
+        this.publicKey = publicKey;
+    }
+
+    public PrivateKey getPrivateKey() {
         return privateKey;
     }
 
-    public void setPublic(PublicKey publicKey){
-        this.publicKey = publicKey;
+    public void setPrivateKey(PrivateKey privateKey) {
+        this.privateKey = privateKey;
     }
 
     @Override
     public String toString() {
-        // Format the string in a structured way
         return "User{" +
-                "userID=" + userID +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", pNo=" + pNo +
-                ", height=" + height +
-                ", weight=" + weight +
-                ", sex=" + sex +
-                ", profile=" + profile + // Assuming profile has a sensible toString() method
-                ", publicKey=" + (publicKey != null ? publicKey.toString() : "null") +
+                userID +
+                ", " + name +
+                ", " + email +
+                ", " + pNo +
+                ", " + height +
+                ", " + weight +
+                ", " + sex +
+                ", " + isPublic +
+                ", " + (profilePic != null ? profilePic.toString() : "null") +
+                ", " + (publicKey != null ? publicKey.toString() : "null") +
                 '}';
+    }
+    public static User fromString(String string) {
+        try {
+            // Clean and split input string
+            String cleanedString = string.replace("User{", "").replace("}", "").trim();
+            String[] data = cleanedString.split(", ");
+
+            // Parse values and construct the User object
+            int userID = Integer.parseInt(data[0].trim());
+            String name = data[1].trim();
+            String email = data[2].trim();
+            int pNo = Integer.parseInt(data[3].trim());
+            int height = Integer.parseInt(data[4].trim());
+            int weight = Integer.parseInt(data[5].trim());
+            char sex = data[6].trim().charAt(0);
+            boolean isPublic = Boolean.parseBoolean(data[7].trim());
+
+            // Assuming profilePic is optional and can be null
+            byte[] profilePic = null;
+            if (!data[8].equals("null")) {
+                profilePic = data[8].trim().getBytes();
+            }
+
+            return new User(userID, name, email, pNo, height, weight, sex, profilePic, isPublic);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid number format in input string: " + string, e);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("Missing fields in input string: " + string, e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error parsing User from string: " + string, e);
+        }
     }
 }

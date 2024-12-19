@@ -1,5 +1,6 @@
 package com.group21.NutriFit.utils;
 
+import java.security.PublicKey;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -69,20 +70,41 @@ public abstract class Database<T> {
     }
 
     public void pushData(){
-        StringBuilder formattedData = new StringBuilder();
-        formattedData.append("[userID]\n");
+        List<String> data = new ArrayList<>(fileProcessor.readFile(filePath));
         for (Integer userID : records.keySet()) {
-            formattedData.append(userID).append(" ");
+            data.set(1, data.get(1)+", "+userID);
         }
-        formattedData.append("\n");
-        formattedData.append("[data]\n");
-        for (T data : records.values()) {
-            formattedData.append(data.toString()).append("\n");
+        for (T dataItem : records.values()) {
+            data.set(data.size()-1, dataItem.toString());
         }
-        String result = formattedData.toString();
 
-        fileProcessor.writeFileAsync(filePath, base64Encode(result));
+        fileProcessor.writeFileAsync(filePath, base64Encode(String.join("\n", data)));
     }
+
+    public void pushDataEncrypted(PublicKey publicKey){
+        List<String> data = new ArrayList<>(fileProcessor.readFile(filePath));
+        for (Integer userID : records.keySet()) {
+            data.set(1, data.get(1)+", "+userID);
+        }
+        for (T dataItem : records.values()) {
+            try {
+                data.set(data.size()-1, Encryption.encrypt(publicKey, dataItem.toString()));
+            } catch (Exception e) {
+                logAndThrow("Unable to encrypt data", e);
+            }
+        }
+
+        fileProcessor.writeFileAsync(filePath, base64Encode(String.join("\n", data)));
+    }
+
+    public void getData(int userID){
+        if(userID==-1){
+            renewData();
+        }else{
+
+        }
+    }
+
 
     public void renewData() {
         // Read the file content into a List<String> (already decoded)
@@ -90,12 +112,12 @@ public abstract class Database<T> {
 
         // Extract user IDs and data
         String[] userIDs = fileContent.get(1).split(", "); // User IDs are on the second line
-        List<T> dataList = (List<T>) new ArrayList<>(fileContent.subList(3, fileContent.size())); // Data starts from the fourth line
+        List<String> dataList = new ArrayList<>(fileContent.subList(3, fileContent.size())); // Data starts from the fourth line
 
         // Ensure userIDs and dataList have the same size
         if (userIDs.length == dataList.size()) {
             for (int i = 0; i < userIDs.length; i++) {
-                records.put(Integer.parseInt(userIDs[i]), dataList.get(i));  // Assuming T is String
+                records.put(Integer.parseInt(userIDs[i]), (T) dataList.get(i));  // Assuming T is String
             }
             LOGGER.info("Data has been successfully renewed.");
         } else {
