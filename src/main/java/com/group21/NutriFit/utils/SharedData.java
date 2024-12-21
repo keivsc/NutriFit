@@ -2,7 +2,6 @@ package com.group21.NutriFit.utils;
 
 import com.group21.NutriFit.Model.Activity;
 import com.group21.NutriFit.Model.Goal;
-import com.group21.NutriFit.Model.Profile;
 import com.group21.NutriFit.Model.User;
 
 import java.util.List;
@@ -12,7 +11,6 @@ public class SharedData {
     private User currentUser = null;
     private List<Activity> activities = null;
     private List<Goal> goals = null;
-    private Profile userProfile = null;
 
     public SharedData(){
 
@@ -69,18 +67,6 @@ public class SharedData {
             this.goals = goals;
         } else {
             throw new IllegalArgumentException("Goal data is invalid");
-        }
-    }
-
-    public Profile getUserProfile() {
-        return userProfile;
-    }
-
-    public void setUserProfile(Profile userProfile) {
-        if (userProfile != null) {
-            this.userProfile = userProfile;
-        } else {
-            throw new IllegalArgumentException("Profile data cannot be null");
         }
     }
 }

@@ -90,7 +90,7 @@ public abstract class Database<T> {
             try {
                 data.set(data.size()-1, Encryption.encrypt(publicKey, dataItem.toString()));
             } catch (Exception e) {
-                logAndThrow("Unable to encrypt data", e);
+                LOGGER.warning("Unable to encrypt data");
             }
         }
 
