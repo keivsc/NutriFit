@@ -11,15 +11,16 @@ import java.io.IOException;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // Load FXML
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("view/Landing.fxml"));
+        // Load FXML - make sure the path is absolute
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/com/group21/NutriFit/view/Landing.fxml"));
 
         // Create the Scene
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         DefaultController controller = fxmlLoader.getController();
         controller.setStage(stage);
-        // Load the CSS file correctly
-        scene.getStylesheets().add(App.class.getResource("/com/group21/nutrifit/view/src/style.css").toExternalForm());
+
+        // Load the CSS file correctly (absolute path in the JAR)
+        scene.getStylesheets().add(App.class.getResource("/com/group21/NutriFit/view/src/style.css").toExternalForm());
 
         // Configure the Stage
         stage.setTitle("NutriFit");
