@@ -1,9 +1,12 @@
 package com.group21.NutriFit.Model;
 
 import com.group21.NutriFit.utils.Database;
+import com.group21.NutriFit.utils.Encryption;
 
 import java.security.PublicKey;
 import java.security.PrivateKey;
+import java.time.LocalDate;
+import java.util.logging.Logger;
 
 public class User extends BaseModel<User> {
     private final String filePath = "./data/users.dat";
@@ -148,6 +151,23 @@ public class User extends BaseModel<User> {
 
     public static String authorise(String email, String password){
         Database<String> db = new Database<String>("keys.dat");
-        return db.get(email.hashCode());
+        return db.get(email);
+    }
+
+    public static int newUser(String email, String password, String Name, LocalDate dob){
+        Database<String> db = new Database<>("keys.dat");
+        System.out.println(db.get(email));
+        if(db.get(email)!=null){
+            return 1;
+        }
+        try{
+            Encryption.generateKeys(email, password);
+            return 0;
+        } catch (Exception e) {
+            Logger.getLogger(User.class.getName()).warning("Unable to create account");
+            throw new RuntimeException(e);
+            //return 2;
+        }
+
     }
 }

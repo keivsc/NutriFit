@@ -4,24 +4,27 @@ import com.group21.NutriFit.Model.User;
 import com.group21.NutriFit.utils.Encryption;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class LandingController extends DefaultController {
-    public Button registerButton;
     @FXML
     private TextField emailField;
     @FXML
     private TextField passwordField;
     @FXML
-    private Text loginStatus;
+    private Text statusText;
+
+    private String defaultStyle;
+
+    @FXML
+    protected void initialize() {
+        defaultStyle = emailField.getStyle();
+        emailField.textProperty().addListener((observable, oldValue, newValue) -> resetFieldStyle(emailField, defaultStyle));
+        passwordField.textProperty().addListener((observable, oldValue, newValue) -> resetFieldStyle(passwordField, defaultStyle));
+    }
 
     @FXML
     protected void onLoginClick() throws IOException {
@@ -29,31 +32,31 @@ public class LandingController extends DefaultController {
         String password = passwordField.getText();
 
         if (email.isEmpty() || password.isEmpty()) {
-            loginStatus.setText("Please enter your email and password.");
-        } else if (!isValidEmail(email)) {
-            loginStatus.setText("Please enter a valid email.");
-        } else {
-            String keys = User.authorise(email, password);
-            if (keys == null || keys.isEmpty()) {
-                loginStatus.setText("Incorrect email or password.");
-            } else {
-                getSharedData().setEncryptionkeys(Encryption.parseKeys(keys));
-                switchScene("home");
-            }
+            statusText.setText("Please enter your email and password.");
+            if (email.isEmpty()) emailField.setStyle("-fx-border-color:red;");
+            if (password.isEmpty()) passwordField.setStyle("-fx-border-color:red;");
+            return;
         }
 
-        System.out.println("LOGIN CLICKED");
-    }
+        if (!isValidEmail(email)) {
+            statusText.setText("Please enter a valid email.");
+            emailField.setStyle(emailField.getStyle()+"-fx-border-color:red;");
+            return;
+        }
 
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        String keys = User.authorise(email, password);
+        if (keys == null || keys.isEmpty()) {
+            statusText.setText("Incorrect email or password.");
+            emailField.setStyle(emailField.getStyle()+"-fx-border-color:red;");
+            passwordField.setStyle(passwordField.getStyle()+"-fx-border-color:red;");
+        } else {
+            getSharedData().setEncryptionkeys(Encryption.parseKeys(keys));
+            switchScene("Home");
+        }
     }
 
     @FXML
-    protected void onSignUpClick(){
+    public void onSignUpClick() {
         switchScene("SignUp");
     }
 

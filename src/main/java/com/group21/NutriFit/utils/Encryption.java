@@ -18,17 +18,23 @@ public class Encryption {
 
     private static String generateSalt() {
         FileProcessor fileProcessor = new FileProcessor();
-        List<String> data = new ArrayList<>(fileProcessor.readFile("./keys.dat"));
-        if (!data.isEmpty() && data.getFirst() != null) {
-            return data.getFirst(); // Return the existing salt
+        fileProcessor.createFile("salt.dat", false);  // Ensure file is created if it doesn't exist
+        List<String> data = new ArrayList<>(fileProcessor.readFile("salt.dat"));
+
+        if (!data.isEmpty() && data.size() > 3 && !data.get(3).isEmpty()) {
+            // Return the existing salt if it exists in line 4 (index 3)
+            return data.get(3);
         } else {
-            // Generate a new salt if none exists
+            // Generate a new salt if the file is empty or doesn't contain enough data
             byte[] saltBytes = new byte[16]; // 16 bytes = 128 bits
             SecureRandom random = new SecureRandom();
             random.nextBytes(saltBytes);
             String newSalt = Base64.getEncoder().encodeToString(saltBytes);
-            data.set(0, newSalt);
-            fileProcessor.writeFile("./keys.dat", base64Encode(String.join("\n", data))); // Save the salt
+
+            data.add(newSalt);
+
+            // Save the new salt back into the file
+            fileProcessor.writeFile("salt.dat", base64Encode(String.join("\n", data)));
             return newSalt;
         }
     }
@@ -39,11 +45,10 @@ public class Encryption {
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
         FileProcessor fileProcessor = new FileProcessor();
-        List<String> data = new ArrayList<>(fileProcessor.readFile("./keys.dat"));
-        data.add(hashText(password));
-        data.add(encryptKey(email, password, publicKey.toString()));
-        data.add(encryptKey(email, password, privateKey.toString()));
-        fileProcessor.writeFileAsync("./keys.dat", base64Encode(String.join("\n", data)));
+        List<String> data = new ArrayList<>(fileProcessor.readFile("keys.dat"));
+        data.set(1, data.get(1)+", "+email);
+        data.add(encryptKey(email, password, publicKey.toString())+"[br]"+encryptKey(email, password, privateKey.toString()));
+        fileProcessor.writeFileAsync("keys.dat", base64Encode(String.join("\n", data)));
     }
 
     private static KeyPair generateKeyPair() throws Exception {

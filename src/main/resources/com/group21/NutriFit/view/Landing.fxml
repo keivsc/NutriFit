@@ -46,7 +46,7 @@
                         <Font size="16.0" />
                     </font>
                 </Button>
-                <Text fx:id="loginStatus" fill="RED" layoutX="75.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="450.0">
+                <Text fx:id="statusText" fill="RED" layoutX="75.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="450.0">
                     <font>
                         <Font size="16.0" />
                     </font>

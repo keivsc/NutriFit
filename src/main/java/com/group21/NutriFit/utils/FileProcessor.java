@@ -5,12 +5,13 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import static com.group21.NutriFit.utils.Utils.base64Decode;
+import static com.group21.NutriFit.utils.Utils.base64Encode;
 
 public class FileProcessor {
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor(); // Executor for async operations
     private static final BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<>(); // Queue for write tasks
-    private static final String dataPath = System.getProperty("user.dir")+"\\data\\";
+    private static final String dataPath = System.getProperty("user.dir") + File.separator + "data" + File.separator;
 
     // Constructor initializes a background thread that processes the queued tasks
     public FileProcessor() {
@@ -31,7 +32,7 @@ public class FileProcessor {
     public void createFile(String filePath, Boolean override) {
         try {
             if (!override) {
-                filePath = dataPath + filePath;
+                filePath = dataPath +File.separator+ filePath;
                 System.out.println(filePath);
                 File dir = new File(dataPath);
                 if (!dir.exists()) {
@@ -41,7 +42,8 @@ public class FileProcessor {
             File file = new File(filePath);
             if (file.createNewFile()) {
                 System.out.println("File created: " + filePath);
-                writeFile(filePath, "[id]\n\n[data]");
+                writeFile(filePath, base64Encode("[id]\n\n[data]"));
+                System.out.println("Written to: "+filePath);
             } else {
                 System.out.println("File already exists or could not be created: " + filePath);
             }
@@ -52,7 +54,7 @@ public class FileProcessor {
 
     // Synchronously read the file
     public List<String> readFile(String filePath) {
-        filePath = dataPath + filePath;
+        filePath = dataPath +File.separator+ filePath;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             StringBuilder data = new StringBuilder();
@@ -60,6 +62,7 @@ public class FileProcessor {
                 data.append(line);
             }
             String decodedData = Utils.base64Decode(data.toString());
+            System.out.println(decodedData);
             return List.of(decodedData.split("\n"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException("File not found: " + filePath, e);
@@ -71,7 +74,7 @@ public class FileProcessor {
     // Queued asynchronous write to file
     public void writeFileAsync(String filePath, String data) {
         // Create a task to write data to the file
-        String fullFilePath = dataPath + filePath; // Compute full file path before the lambda
+        String fullFilePath = dataPath +File.separator+ filePath; // Compute full file path before the lambda
 
         Runnable writeTask = () -> {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(fullFilePath))) {
@@ -93,9 +96,9 @@ public class FileProcessor {
 
 
     public void writeFile(String filePath, String data){
-        filePath = dataPath + filePath;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(data);
+            writer.flush();
             System.out.println("Data written to file: " + filePath);
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());

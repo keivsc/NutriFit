@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public abstract class BaseModel<T> implements Serializable {
     protected int userID;
-    protected final String keyPath = "./data/keys.dat";
+    protected final String keyPath = "keys.dat";
 
 
     public BaseModel(int id){
