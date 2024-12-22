@@ -1,6 +1,9 @@
 package com.group21.NutriFit.ViewController;
 
+import com.group21.NutriFit.Model.Activity;
+import com.group21.NutriFit.Model.Nutrition;
 import com.group21.NutriFit.Model.User;
+import com.group21.NutriFit.utils.Database;
 import com.group21.NutriFit.utils.Encryption;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public class LandingController extends DefaultController {
@@ -53,6 +57,8 @@ public class LandingController extends DefaultController {
         } else {
             getSharedData().setEncryptionkeys((Map<String, Object>) authorisationData.get("Keys"));
             getSharedData().setCurrentUser((User) authorisationData.get("User"));
+            updateSharedData();
+
             switchScene("Home");
         }
     }

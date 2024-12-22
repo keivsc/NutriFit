@@ -19,16 +19,17 @@ public class User extends BaseModel<User> {
     private String name;
     private String email;
     private int age;
-    private int height;
-    private int weight;
+    private double height;
+    private double weight;
     private char sex;
     private byte[] profilePic;
     private boolean isPublic;
     private PublicKey publicKey;
     private PrivateKey privateKey;
+    private double weightGoal; // Target weight
+    private int intensity;     // Exercise intensity (1: low, 2: medium, 3: high)
 
-
-    public User(int userID, String name, String email, int age, int height, int weight, char sex, boolean isPublic, byte[] profilePic) {
+    public User(int userID, String name, String email, int age, double height, double weight, char sex, boolean isPublic, byte[] profilePic, double weightGoal, int intensity) {
         super(userID);
         this.name = name;
         this.email = email;
@@ -38,6 +39,8 @@ public class User extends BaseModel<User> {
         this.sex = sex;
         this.profilePic = profilePic;
         this.isPublic = isPublic;
+        this.weightGoal = weightGoal;
+        this.intensity = intensity;
     }
 
     public int getAge() {
@@ -64,19 +67,19 @@ public class User extends BaseModel<User> {
         this.email = email;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
@@ -120,6 +123,22 @@ public class User extends BaseModel<User> {
         this.privateKey = privateKey;
     }
 
+    public double getWeightGoal() {
+        return weightGoal;
+    }
+
+    public void setWeightGoal(double weightGoal) {
+        this.weightGoal = weightGoal;
+    }
+
+    public int getIntensity() {
+        return intensity;
+    }
+
+    public void setIntensity(int intensity) {
+        this.intensity = intensity;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -131,10 +150,11 @@ public class User extends BaseModel<User> {
                 ", " + weight +
                 ", " + sex +
                 ", " + isPublic +
+                ", " + weightGoal +
+                ", " + intensity +
                 ", " + (profilePic != null ? Arrays.toString(profilePic) : "null") +
                 '}';
     }
-
 
     public static User fromString(String string) {
         try {
@@ -145,7 +165,7 @@ public class User extends BaseModel<User> {
             String[] data = cleanedString.split(", ");
 
             // Ensure the string has the correct number of elements
-            if (data.length < 8) {
+            if (data.length < 10) { // Adjust for weightGoal and intensity
                 throw new IllegalArgumentException("Insufficient data to parse User: " + string);
             }
 
@@ -154,14 +174,16 @@ public class User extends BaseModel<User> {
             String name = data[1].trim();
             String email = data[2].trim();
             int age = Integer.parseInt(data[3].trim());
-            int height = Integer.parseInt(data[4].trim());
-            int weight = Integer.parseInt(data[5].trim());
+            double height = Double.parseDouble(data[4].trim());
+            double weight = Double.parseDouble(data[5].trim());
             char sex = data[6].trim().charAt(0);
             boolean isPublic = Boolean.parseBoolean(data[7].trim());
+            double weightGoal = Double.parseDouble(data[8].trim());
+            int intensity = Integer.parseInt(data[9].trim());
 
             byte[] profilePic = null;
-            if (!"null".equals(data[8].trim())) {
-                String profilePicString = data[8].trim();
+            if (!"null".equals(data[10].trim())) {
+                String profilePicString = data[10].trim();
                 // Remove the square brackets and split by comma
                 String[] byteStrings = profilePicString.substring(1, profilePicString.length() - 1).split(", ");
                 profilePic = new byte[byteStrings.length];
@@ -171,7 +193,7 @@ public class User extends BaseModel<User> {
             }
 
             // Return a new User object using the parsed values
-            return new User(userID, name, email, age, height, weight, sex, isPublic, profilePic);
+            return new User(userID, name, email, age, height, weight, sex, isPublic, profilePic, weightGoal, intensity);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid number format in input string: " + string, e);
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -181,8 +203,7 @@ public class User extends BaseModel<User> {
         }
     }
 
-
-    public static Map<String, Object> authorise(String email, String password){
+    public static Map<String, Object> authorise(String email, String password) {
         Database<String> keysDB = new Database<>("keys.dat");
         Database<String> userDB = new Database<>("users.dat");
         try {
@@ -193,28 +214,26 @@ public class User extends BaseModel<User> {
             allData.put("User", userData);
             return allData;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
 
-    public static int newUser(String email, String password, String name, LocalDate dob){
+    public static int newUser(String email, String password, String name, LocalDate dob) {
         Database<String> db = new Database<>("keys.dat");
-        System.out.println(db.get(email));
-        if(db.get(email)!=null){
+        if (db.get(email) != null) {
             return 1;
         }
-        try{
+        try {
             PublicKey publicKey = Encryption.generateKeys(email, password);
             Database<User> userDB = new Database<>("users.dat");
             int userID = userDB.getNewID();
-            userDB.add(email, new User(userID, name, email, Period.between(dob, LocalDate.now()).getYears(), 0, 0, 'N', false, null));
+            userDB.add(email, new User(userID, name, email, Period.between(dob, LocalDate.now()).getYears(), 0, 0, 'N', false, null, 0, 0));
             userDB.pushDataEncrypted(publicKey);
             return 0;
         } catch (Exception e) {
             Logger.getLogger(User.class.getName()).warning("Unable to create account");
             throw new RuntimeException(e);
-            //return 2;
         }
-
     }
 }

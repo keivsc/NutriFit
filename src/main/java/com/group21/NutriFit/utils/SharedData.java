@@ -1,27 +1,50 @@
 package com.group21.NutriFit.utils;
 
 import com.group21.NutriFit.Model.Activity;
-import com.group21.NutriFit.Model.Goal;
+import com.group21.NutriFit.Model.Nutrition;
 import com.group21.NutriFit.Model.User;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class SharedData {
     private static SharedData sharedInstance;
     private User currentUser = null;
-    private List<Activity> activities = null;
-    private List<Goal> goals = null;
+    private List<Activity> activities = new ArrayList<>();
+    private List<Nutrition> nutritions = new ArrayList<>();
+    private String workouts ="";
+    private LocalDateTime workoutTime;
+    private double calorieIntake;
+    private double calorieTarget;
+
+    public SharedData(){
+
+    }
+
+    public double getCalorieTarget() {
+        return calorieTarget;
+    }
+
+    public void setCalorieTarget(double calorieTarget) {
+        this.calorieTarget = calorieTarget;
+    }
+
+    public double getCalorieIntake() {
+        return calorieIntake;
+    }
+
+    public void setCalorieIntake(double calorieIntake) {
+        this.calorieIntake = calorieIntake;
+    }
 
     public Map<String, Object> getEncryptionkeys() {
         return encryptionkeys;
     }
 
     private Map<String, Object> encryptionkeys;
-
-    public SharedData(){
-
-    }
 
     public void setEncryptionkeys(Map<String, Object> encryption) {
         this.encryptionkeys = encryption;
@@ -69,15 +92,39 @@ public class SharedData {
         }
     }
 
-    public List<Goal> getGoals() {
-        return goals;
+    public List<Nutrition> getNutritions() {
+        return nutritions;
     }
 
-    public void setGoals(List<Goal> goals) {
-        if (goals != null) {
-            this.goals = goals;
+    public void setNutritions(List<Nutrition> Nutritions) {
+        if (Nutritions != null) {
+            this.nutritions = nutritions;
         } else {
-            throw new IllegalArgumentException("Goal data is invalid");
+            throw new IllegalArgumentException("Nutrition data is invalid");
         }
+    }
+
+    public void addNutrition(Nutrition nutrition) {
+        if (nutrition != null) {
+            this.nutritions.add(nutrition);
+        } else {
+            throw new IllegalArgumentException("Nutrition data cannot be null");
+        }
+    }
+
+    public String getWorkouts() {
+        return workouts;
+    }
+
+    public void setWorkouts(String workouts) {
+        this.workouts = workouts;
+    }
+
+    public LocalDateTime getWorkoutTime() {
+        return workoutTime;
+    }
+
+    public void setWorkoutTime(LocalDateTime date){
+        this.workoutTime=date;
     }
 }

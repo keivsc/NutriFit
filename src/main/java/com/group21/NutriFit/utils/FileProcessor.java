@@ -33,7 +33,7 @@ public class FileProcessor {
         try {
             if (!override) {
                 filePath = dataPath +File.separator+ filePath;
-                System.out.println(filePath);
+                
                 File dir = new File(dataPath);
                 if (!dir.exists()) {
                     dir.mkdirs();
@@ -41,10 +41,10 @@ public class FileProcessor {
             }
             File file = new File(filePath);
             if (file.createNewFile()) {
-                System.out.println("File created: " + filePath);
+                
                 writeFile(filePath, base64Encode("[id]\n\n[data]"));
             } else {
-                System.out.println("File already exists or could not be created: " + filePath);
+                
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -61,7 +61,7 @@ public class FileProcessor {
                 data.append(line);
             }
             String decodedData = Utils.base64Decode(data.toString());
-            System.out.println(decodedData);
+            
             return List.of(decodedData.split("\n"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException("File not found: " + filePath, e);
@@ -78,7 +78,7 @@ public class FileProcessor {
         Runnable writeTask = () -> {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(fullFilePath))) {
                 writer.write(data);
-                System.out.println("Data written to file: " + fullFilePath);
+                
             } catch (IOException e) {
                 System.err.println("Error writing to file: " + e.getMessage());
             }
@@ -98,7 +98,7 @@ public class FileProcessor {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(data);
             writer.flush();
-            System.out.println("Data written to file: " + filePath);
+            
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
         }
@@ -151,8 +151,6 @@ public class FileProcessor {
 
     public static void main(String[] args){
         FileData fileData = new FileData(List.of(new String[]{"1, 2, 3", "a\nb\nc"}));
-        System.out.println(fileData.getFirst());
-        System.out.println(fileData.getDataByID("1"));
     }
 
 

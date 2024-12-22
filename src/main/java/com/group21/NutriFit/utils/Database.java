@@ -1,5 +1,7 @@
 package com.group21.NutriFit.utils;
 
+import com.group21.NutriFit.Model.BaseModel;
+
 import java.security.PublicKey;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -77,24 +79,50 @@ public class Database<T> {
         fileProcessor.writeFileAsync(filePath, base64Encode(String.join("\n", data)));
     }
 
-    public void pushDataEncrypted(PublicKey publicKey){
+    public void pushDataEncrypted(PublicKey publicKey) {
         List<String> data = new ArrayList<>(fileProcessor.readFile(filePath));
-        for (Object ID : records.keySet()) {
-            data.set(1, data.get(1)+", "+ID);
+
+        // Ensure the list has enough elements
+        if (data.size() < 3) {
+            LOGGER.warning("Insufficient data in file for checking records.");
+            return;
         }
-        for (T dataItem : records.values()) {
-            try {
-                data.add(Encryption.encrypt(publicKey, dataItem.toString()));
-            } catch (Exception e) {
-                LOGGER.warning("Unable to encrypt data");
+        boolean replace=false;
+        List<String> IDS = List.of(data.get(1).split(", "));
+
+        // Iterate over the records and check if the ID exists in the data
+        for (Object id : records.keySet()) {
+            replace=IDS.contains(id);
+            // Check if the record ID exists in the third element of the data (or wherever appropriate)
+
+            if (replace) {
+                try {
+
+
+                    data.set(IDS.indexOf(id.toString())+2,Encryption.encrypt(publicKey, records.get(id).toString()));
+                } catch (Exception e) {
+                    LOGGER.warning("Unable to encrypt data for ID: " + id);
+                    return;
+                }
+            }
+            else {
+                try {
+                    data.set(1, data.get(1)+", "+id.toString());
+                    data.add(Encryption.encrypt(publicKey, records.get(id).toString()));
+                } catch (Exception e) {
+                    LOGGER.warning("Unable to encrypt data for ID: " + id);
+                    return;
+                }
             }
         }
 
+
+        // Write the data back to the file after modification
         fileProcessor.writeFileAsync(filePath, base64Encode(String.join("\n", data)));
     }
 
     public T get(Object ID){
-        System.out.println(records);
+        
         if(records.isEmpty()){
             renewData(ID);
             return records.get(ID);
@@ -148,12 +176,8 @@ public class Database<T> {
         // Extract user IDs and data
         List<String> IDs = List.of(fileContent.get(1).split(", "));
         int IDIndex = IDs.indexOf(String.valueOf(id));
-        System.out.println(String.valueOf(id));
-        System.out.println(IDs);
         if (IDIndex != -1) {
             if (fileContent.size() > IDIndex + 2) {
-                System.out.println(id);
-                System.out.println((T) fileContent.get(IDIndex + 2));
                 records.put(id, (T) fileContent.get(IDIndex + 2));
             } else {
                 LOGGER.warning("Data for ID: " + id + " not found in the file.");
@@ -163,9 +187,27 @@ public class Database<T> {
         }
     }
 
-    // Log and throw an exception with a message
-    protected void logAndThrow(String message, Exception e) {   
-        LOGGER.log(Level.SEVERE, message, e);
-        throw new RuntimeException(message, e);
+    public List<T> getAll(int id){
+        List<String> fileContent = fileProcessor.readFile(filePath);
+        List<T> items = new ArrayList<>();
+        // Ensure the file content has enough lines
+        if (fileContent.size() < 2) {
+            LOGGER.warning("Insufficient data in file. Unable to renew data for ID: " + id);
+            return null;
+        }
+
+        // Extract user IDs and data
+        List<String> IDs = List.of(fileContent.get(1).split(", "));
+        IDs.forEach((ID)->{
+            System.out.println("Match: "+ID);
+            System.out.println("Input: "+id);
+            System.out.println(Objects.equals(ID, String.valueOf(id)));
+            if(Objects.equals(ID, String.valueOf(id))){
+                items.add((T) fileContent.get(IDs.indexOf(ID) + 2));
+                System.out.println(items);
+            }
+        });
+        System.out.println(items);
+        return items;
     }
 }

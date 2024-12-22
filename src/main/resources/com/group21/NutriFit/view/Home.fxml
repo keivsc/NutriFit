@@ -62,7 +62,7 @@
                               <Circle centerX="35" centerY="50" radius="30" />
                            </clip>
                         </ImageView>
-                        <ImageView id="image-circle" fx:id="profilePicture" fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" translateX="5.0" translateY="190.0">
+                        <ImageView id="image-circle" fx:id="profilePicture" fitHeight="65.0" fitWidth="65.0" onMouseClicked="#onUserClick" pickOnBounds="true" preserveRatio="true" translateX="5.0" translateY="190.0">
                            <image>
                               <Image url="@src/default.png" />
                            </image>
@@ -83,12 +83,12 @@
                         <Insets top="60.0" />
                      </HBox.margin>
                      <children>
-                        <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Home" translateY="9.0" />
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Scan Food" translateY="20.0" />
-                        <Button layoutX="10.0" layoutY="43.0" mnemonicParsing="false" onAction="#onNutritionClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Nutrition" translateY="40.0" />
-                        <Button layoutX="10.0" layoutY="109.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Workout" translateY="60.0" />
-                        <Button layoutX="10.0" layoutY="175.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Settings" translateY="80.0" />
-                        <Text fx:id="username" fill="WHITE" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="User" translateY="150.0" />
+                        <Button mnemonicParsing="false" onMouseClicked="#onHomeClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Home" translateY="9.0" />
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#onScanFoodClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Scan Food" translateY="20.0" />
+                        <Button layoutX="10.0" layoutY="43.0" mnemonicParsing="false" onAction="#onNutritionClick" onMouseClicked="#onNutritionClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Nutrition" translateY="40.0" />
+                        <Button layoutX="10.0" layoutY="109.0" mnemonicParsing="false" onMouseClicked="#onWorkoutClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Workout" translateY="60.0" />
+                        <Button layoutX="10.0" layoutY="175.0" mnemonicParsing="false" onMouseClicked="#onSettingsClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Settings" translateY="80.0" />
+                        <Text fx:id="username" fill="WHITE" onMouseClicked="#onUserClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="User" translateY="150.0" />
                      </children>
                      <padding>
                         <Insets top="25.0" />
@@ -140,12 +140,12 @@
                                     <VBox alignment="TOP_CENTER" prefHeight="222.0" prefWidth="602.0" spacing="10.0">
                                        <children>
                                           <ProgressBar fx:id="calorieProgress" prefWidth="200.0" progress="0.0" style="-fx-accent: #4CAF50;" />
-                                          <Label text="345 Kcal">
+                                          <Label fx:id="calorieDone" text="345 Kcal">
                                              <font>
                                                 <Font name="System Bold" size="27.0" />
                                              </font>
                                           </Label>
-                                          <Label text="Target: 600 Kcal" textFill="LIGHTGRAY">
+                                          <Label fx:id="calorieTarget" text="Target: 600 Kcal" textFill="LIGHTGRAY">
                                              <font>
                                                 <Font size="19.0" />
                                              </font>
@@ -185,12 +185,12 @@
                                     <VBox alignment="TOP_CENTER" prefHeight="222.0" prefWidth="602.0" spacing="10.0">
                                        <children>
                                           <ProgressBar fx:id="exerciseProgress" prefWidth="200.0" progress="0.0" />
-                                          <Label text="45 mins">
+                                          <Label fx:id="exerciseDone" text="45 mins">
                                              <font>
                                                 <Font name="System Bold" size="27.0" />
                                              </font>
                                           </Label>
-                                          <Label text="Target: 1.5hours" textFill="LIGHTGRAY">
+                                          <Label fx:id="exerciseTarget" text="Target: 1.5hours" textFill="LIGHTGRAY">
                                              <font>
                                                 <Font size="19.0" />
                                              </font>
@@ -237,12 +237,12 @@
                                     <VBox alignment="TOP_CENTER" prefHeight="222.0" prefWidth="602.0" spacing="10.0">
                                        <children>
                                           <ProgressBar fx:id="sleepProgress" prefWidth="200.0" progress="0.0" />
-                                          <Label text="6 hrs 21 mins">
+                                          <Label fx:id="sleepDone" text="6 hrs 21 mins">
                                              <font>
                                                 <Font name="System Bold" size="27.0" />
                                              </font>
                                           </Label>
-                                          <Label text="Target: 08 hrs" textFill="LIGHTGRAY">
+                                          <Label fx:id="sleepTarget" text="Target: 08 hrs" textFill="LIGHTGRAY">
                                              <font>
                                                 <Font size="19.0" />
                                              </font>
@@ -282,12 +282,12 @@
                                     <VBox alignment="TOP_CENTER" prefHeight="222.0" prefWidth="602.0" spacing="10.0">
                                        <children>
                                           <ProgressBar fx:id="stepProgress" prefWidth="200.0" progress="0.0" />
-                                          <Label text="345 Kcal">
+                                          <Label fx:id="stepDone" text="345 Kcal">
                                              <font>
                                                 <Font name="System Bold" size="27.0" />
                                              </font>
                                           </Label>
-                                          <Label text="Target: 600 Kcal" textFill="LIGHTGRAY">
+                                          <Label fx:id="stepTarget" text="Target: 600 Kcal" textFill="LIGHTGRAY">
                                              <font>
                                                 <Font size="19.0" />
                                              </font>

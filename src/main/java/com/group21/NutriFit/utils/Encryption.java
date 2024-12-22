@@ -144,7 +144,7 @@ public class Encryption {
             encryptionMap.put("PublicKey", stringToPublic(Objects.requireNonNull(decryptKey(email, password, keys[0]))));
             encryptionMap.put("PrivateKey", stringToPrivate(Objects.requireNonNull(decryptKey(email, password, keys[1]))));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return null;
         }
         return encryptionMap;
     }

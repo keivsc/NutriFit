@@ -21,6 +21,104 @@
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
+            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="849.0" prefWidth="250.0" style="-fx-background-color: #2444A5;">
+               <children>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="723.0" prefWidth="100.0" translateY="10.0">
+                     <children>
+                        <ImageView id="image-circle" fitHeight="100.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@src/sidebar1.png" />
+                           </image>
+                           <clip>
+                              <Circle centerX="35" centerY="50" radius="30" />
+                           </clip>
+                        </ImageView>
+                        <ImageView id="image-circle" fitHeight="100.0" fitWidth="90.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" translateY="20.0">
+                           <image>
+                              <Image url="@src/sidebar2.png" />
+                           </image>
+                           <clip>
+                              <Circle centerX="35" centerY="50" radius="30" />
+                           </clip>
+                        </ImageView>
+                        <ImageView id="image-circle" fitHeight="100.0" fitWidth="90.0" layoutX="10.0" layoutY="310.0" pickOnBounds="true" preserveRatio="true" translateY="40.0">
+                           <image>
+                              <Image url="@src/sidebar3.png" />
+                           </image>
+                           <clip>
+                              <Circle centerX="35" centerY="50" radius="30" />
+                           </clip>
+                        </ImageView>
+                        <ImageView id="image-circle" fitHeight="100.0" fitWidth="90.0" layoutX="10.0" layoutY="312.0" pickOnBounds="true" preserveRatio="true" translateY="60.0">
+                           <image>
+                              <Image url="@src/sidebar5.png" />
+                           </image>
+                           <clip>
+                              <Circle centerX="35" centerY="50" radius="30" />
+                           </clip>
+                        </ImageView>
+                        <ImageView id="image-circle" fitHeight="100.0" fitWidth="90.0" layoutX="10.0" layoutY="512.0" pickOnBounds="true" preserveRatio="true" translateY="100.0">
+                           <image>
+                              <Image url="@src/sidebar7.png" />
+                           </image>
+                           <clip>
+                              <Circle centerX="35" centerY="50" radius="30" />
+                           </clip>
+                        </ImageView>
+                        <ImageView id="image-circle" fx:id="profilePicture" fitHeight="65.0" fitWidth="65.0" onMouseClicked="#onUserClick" pickOnBounds="true" preserveRatio="true" translateX="5.0" translateY="190.0">
+                           <image>
+                              <Image url="@src/default.png" />
+                           </image>
+                           <clip>
+                              <Circle centerX="33" centerY="33" radius="30" />
+                           </clip>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets top="60.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="892.0" prefWidth="150.0" spacing="60.0" translateY="10.0">
+                     <HBox.margin>
+                        <Insets top="60.0" />
+                     </HBox.margin>
+                     <children>
+                        <Button mnemonicParsing="false" onMouseClicked="#onHomeClick" prefHeight="46.0" prefWidth="158.0" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Home" translateY="9.0" />
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#onScanFoodClick" prefHeight="46.0" prefWidth="176.0" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Scan Food" translateY="20.0" />
+                        <Button layoutX="10.0" layoutY="43.0" mnemonicParsing="false" onMouseClicked="#onNutritionClick" prefHeight="46.0" prefWidth="156.0" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Nutrition" translateY="40.0" />
+                        <Button layoutX="10.0" layoutY="109.0" mnemonicParsing="false" onMouseClicked="#onWorkoutClick" prefHeight="46.0" prefWidth="160.0" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Workout" translateY="60.0" />
+                        <Button layoutX="10.0" layoutY="175.0" mnemonicParsing="false" onMouseClicked="#onSettingsClick" prefHeight="46.0" prefWidth="150.0" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Settings" translateY="80.0" />
+                        <Text fx:id="username" fill="WHITE" onMouseClicked="#onUserClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="User" translateY="150.0" />
+                     </children>
+                     <padding>
+                        <Insets top="25.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="-38.0" layoutY="-13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="93.0" prefWidth="230.0">
+               <children>
+                  <ImageView fitHeight="101.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true" translateY="15.0">
+                     <image>
+                        <Image url="@src/icon.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="NutriFit">
+                     <font>
+                        <Font size="37.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="15.0" top="25.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </HBox>
             <VBox layoutX="250.0" prefHeight="849.0" prefWidth="1215.0">
                <children>
                   <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="812.0">
@@ -50,9 +148,9 @@
                            <children>
                               <VBox prefHeight="386.0" prefWidth="207.0" spacing="20.0">
                                  <children>
-                                    <Label text="88/120G">
+                                    <Label fx:id="carbsTarget" text="88/120G">
                                        <font>
-                                          <Font name="System Bold" size="37.0" />
+                                          <Font name="System Bold" size="30.0" />
                                        </font>
                                     </Label>
                                     <Label text="Carbs">
@@ -71,9 +169,9 @@
                               </VBox>
                               <VBox layoutX="10.0" layoutY="10.0" prefHeight="386.0" prefWidth="207.0" spacing="20.0">
                                  <children>
-                                    <Label text="30/70G">
+                                    <Label fx:id="proteinTarget" text="30/70G">
                                        <font>
-                                          <Font name="System Bold" size="37.0" />
+                                          <Font name="System Bold" size="30.0" />
                                        </font>
                                     </Label>
                                     <Label text="Protein">
@@ -94,9 +192,9 @@
                               </VBox>
                               <VBox layoutX="217.0" layoutY="10.0" prefHeight="386.0" prefWidth="207.0" spacing="20.0">
                                  <children>
-                                    <Label text="88/120G">
+                                    <Label fx:id="fatsTarget" text="88/120G">
                                        <font>
-                                          <Font name="System Bold" size="37.0" />
+                                          <Font name="System Bold" size="30.0" />
                                        </font>
                                     </Label>
                                     <Label text="Fats">
@@ -271,124 +369,6 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox alignment="CENTER_LEFT" layoutX="-41.0" layoutY="-35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <ImageView fitHeight="101.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true" translateY="15.0">
-                     <image>
-                        <Image url="@src/icon.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="NutriFit">
-                     <font>
-                        <Font size="37.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="15.0" top="25.0" />
-                     </HBox.margin>
-                  </Text>
-               </children>
-               <padding>
-                  <Insets left="50.0" />
-               </padding>
-            </HBox>
-            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="849.0" prefWidth="250.0" style="-fx-background-color: #2444A5;">
-               <children>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="723.0" prefWidth="100.0" translateY="10.0">
-                     <children>
-                        <ImageView id="image-circle" fitHeight="100.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@src/sidebar1.png" />
-                           </image>
-                           <clip>
-                              <Circle centerX="35" centerY="50" radius="30" />
-                           </clip>
-                        </ImageView>
-                        <ImageView id="image-circle" fitHeight="100.0" fitWidth="90.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" translateY="20.0">
-                           <image>
-                              <Image url="@src/sidebar2.png" />
-                           </image>
-                           <clip>
-                              <Circle centerX="35" centerY="50" radius="30" />
-                           </clip>
-                        </ImageView>
-                        <ImageView id="image-circle" fitHeight="100.0" fitWidth="90.0" layoutX="10.0" layoutY="310.0" pickOnBounds="true" preserveRatio="true" translateY="40.0">
-                           <image>
-                              <Image url="@src/sidebar3.png" />
-                           </image>
-                           <clip>
-                              <Circle centerX="35" centerY="50" radius="30" />
-                           </clip>
-                        </ImageView>
-                        <ImageView id="image-circle" fitHeight="100.0" fitWidth="90.0" layoutX="10.0" layoutY="312.0" pickOnBounds="true" preserveRatio="true" translateY="60.0">
-                           <image>
-                              <Image url="@src/sidebar5.png" />
-                           </image>
-                           <clip>
-                              <Circle centerX="35" centerY="50" radius="30" />
-                           </clip>
-                        </ImageView>
-                        <ImageView id="image-circle" fitHeight="100.0" fitWidth="90.0" layoutX="10.0" layoutY="512.0" pickOnBounds="true" preserveRatio="true" translateY="100.0">
-                           <image>
-                              <Image url="@src/sidebar7.png" />
-                           </image>
-                           <clip>
-                              <Circle centerX="35" centerY="50" radius="30" />
-                           </clip>
-                        </ImageView>
-                        <ImageView id="image-circle" fx:id="profilePicture" fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" translateX="5.0" translateY="190.0">
-                           <image>
-                              <Image url="@src/default.png" />
-                           </image>
-                           <clip>
-                              <Circle centerX="33" centerY="33" radius="30" />
-                           </clip>
-                        </ImageView>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets top="60.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="892.0" prefWidth="150.0" spacing="60.0" translateY="10.0">
-                     <HBox.margin>
-                        <Insets top="60.0" />
-                     </HBox.margin>
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#onHomeClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Home" translateY="9.0" />
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onScanFoodClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Scan Food" translateY="20.0" />
-                        <Button layoutX="10.0" layoutY="43.0" mnemonicParsing="false" onAction="#onNutritionClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Nutrition" translateY="40.0" />
-                        <Button layoutX="10.0" layoutY="109.0" mnemonicParsing="false" onAction="#onWorkoutClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Workout" translateY="60.0" />
-                        <Button layoutX="10.0" layoutY="175.0" mnemonicParsing="false" onAction="#onSettingsClick" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="Settings" translateY="80.0" />
-                        <Text fx:id="username" fill="WHITE" style="-fx-background-color: transparent; -fx-background-radius: 20; -fx-text-fill: white; -fx-border-color: transparent; -fx-font-size: 20;" text="User" translateY="150.0" />
-                     </children>
-                     <padding>
-                        <Insets top="25.0" />
-                     </padding>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="-37.0" layoutY="-22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <ImageView fitHeight="101.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true" translateY="15.0">
-                     <image>
-                        <Image url="@src/icon.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="NutriFit">
-                     <font>
-                        <Font size="37.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="15.0" top="25.0" />
-                     </HBox.margin>
-                  </Text>
-               </children>
-               <padding>
-                  <Insets left="50.0" />
-               </padding>
-            </HBox>
          </children>
       </AnchorPane>
    </children>

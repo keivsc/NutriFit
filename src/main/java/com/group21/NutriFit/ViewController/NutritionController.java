@@ -1,5 +1,6 @@
 package com.group21.NutriFit.ViewController;
 
+import com.group21.NutriFit.Model.Nutrition;
 import com.group21.NutriFit.Model.User;
 import javafx.animation.*;
 import javafx.fxml.FXML;
@@ -15,6 +16,12 @@ public class NutritionController extends DefaultController {
     private Text username;
     @FXML
     private ProgressBar carbsProgress;
+    @FXML
+    private Label proteinTarget;
+    @FXML
+    private Label carbsTarget;
+    @FXML
+    private Label fatsTarget;
     @FXML
     private ProgressBar proteinProgress;
     @FXML
@@ -33,12 +40,37 @@ public class NutritionController extends DefaultController {
             switchScene("Settings");
             showPopup("Please enter your information in the Settings!");
         }
+        updateSharedData();
+        double proteinIntake = 0;
+        double fatsIntake = 0;
+        double carbsIntake = 0;
+        for (Nutrition nutrition : getSharedData().getNutritions()) {
+            proteinIntake+=nutrition.getProtein();
+            fatsIntake+=nutrition.getFat();
+            carbsIntake+=nutrition.getCarbs();
+        }
 
-        proteinProgress.setProgress(0.3);
-        fatsProgress.setProgress(0.7);
-        carbsProgress.setProgress(0.6);
+        double totalCalories = getSharedData().getCalorieIntake();
+        double calorieTarget = getSharedData().getCalorieTarget();
 
-        double totalProgress = (fatsProgress.getProgress() + carbsProgress.getProgress() + proteinProgress.getProgress()) / 3;
+        double proteinTargetPercentage = 0.20; // 20% protein
+        double fatsTargetPercentage = 0.30;   // 30% fats
+        double carbsTargetPercentage = 0.50;  // 50% carbs
+
+        double proteinTargetGrams = (proteinTargetPercentage * calorieTarget) / 4;
+        double fatsTargetGrams = (fatsTargetPercentage * calorieTarget) / 9;
+        double carbsTargetGrams = (carbsTargetPercentage * calorieTarget) / 4;
+
+        proteinProgress.setProgress(proteinIntake / proteinTargetGrams);
+        fatsProgress.setProgress(fatsIntake / fatsTargetGrams);
+        carbsProgress.setProgress(carbsIntake / carbsTargetGrams);
+
+        proteinTarget.setText(String.format("%.1fg / %.1fg", proteinIntake, proteinTargetGrams));
+        fatsTarget.setText(String.format("%.1fg / %.1fg", fatsIntake, fatsTargetGrams));
+        carbsTarget.setText(String.format("%.1fg / %.1fg", carbsIntake, carbsTargetGrams));
+
+
+        double totalProgress = (getSharedData().getCalorieIntake()/ getSharedData().getCalorieTarget());
 
         // Update the arc with the combined progress
         updateProgress(totalProgress);

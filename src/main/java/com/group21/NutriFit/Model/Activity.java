@@ -1,7 +1,5 @@
 package com.group21.NutriFit.Model;
 
-import java.io.Serializable;
-
 public class Activity extends BaseModel<Activity> {
     private int activityID;
     private int userID;  // Added userID
@@ -75,6 +73,7 @@ public class Activity extends BaseModel<Activity> {
     }
 
     // fromString method to parse a string into an Activity object
+
     public static Activity fromString(String string) {
         try {
             // Clean the string by removing the "Activity{" and "}" part
@@ -92,7 +91,9 @@ public class Activity extends BaseModel<Activity> {
             int dateUnix = Integer.parseInt(data[5].trim());
 
             // Return a new Activity object
-            return new Activity(activityID, userID, typeID, duration, caloriesBurned, dateUnix);
+            Activity newActivity = new Activity(activityID, userID, typeID, duration, caloriesBurned, dateUnix);
+            System.out.println(newActivity);
+            return newActivity;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid number format in input string: " + string, e);
         } catch (ArrayIndexOutOfBoundsException e) {

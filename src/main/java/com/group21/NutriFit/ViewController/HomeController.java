@@ -1,7 +1,11 @@
 package com.group21.NutriFit.ViewController;
 
+import com.group21.NutriFit.Model.Activity;
+import com.group21.NutriFit.Model.Nutrition;
 import com.group21.NutriFit.Model.User;
+import com.group21.NutriFit.utils.SharedData;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -16,39 +20,100 @@ public class HomeController extends DefaultController {
     @FXML
     private ProgressBar calorieProgress;
     @FXML
+    private Label calorieDone;
+    @FXML
+    private Label calorieTarget;
+    @FXML
     private ProgressBar sleepProgress;
+    @FXML
+    private Label sleepDone;
+    @FXML
+    private Label sleepTarget;
     @FXML
     private ProgressBar exerciseProgress;
     @FXML
+    private Label exerciseDone;
+    @FXML
+    private Label exerciseTarget;
+    @FXML
     private ProgressBar stepProgress;
+    @FXML
+    private Label stepDone;
+    @FXML
+    private Label stepTarget;
     @FXML
     private Arc progressArc;
     @FXML
     private Label progressText;
 
-    private double currentProgress = 0; // Keeps track of the current progress
+    private SharedData sharedData;
 
     @FXML
     private void initialize() {
         // Set the username and progress bars
-        User currentUser = getSharedData().getCurrentUser();
-        username.setText(currentUser.getName());
+        sharedData = getSharedData();
+        User currentUser = sharedData.getCurrentUser();
+
         if (currentUser.getWeight() == 0 || currentUser.getHeight() == 0 || currentUser.getSex() == 'N') {
-            switchScene("Settings");
-            showPopup("Please enter your information in the Settings!");
+
+            Platform.runLater(() -> {
+                showPopup("Please enter your information in the Settings!");
+                switchScene("Settings");});
+            return; // Stop further execution
         }
-        calorieProgress.setProgress(0.3);
-        exerciseProgress.setProgress(0.7);
+        username.setText(currentUser.getName());
+        updateSharedData();
+        double calorieIntake = 0;
+        double calorieGoal = calculateCalIntake(currentUser.getWeight(), currentUser.getHeight(), currentUser.getAge(), currentUser.getSex(), currentUser.getWeightGoal());
+        try {
+            for (Nutrition nutrition : sharedData.getNutritions()) {
+                calorieIntake += nutrition.getCalorieIntake();
+            }
+            calorieProgress.setProgress(calorieIntake/calorieGoal);
+        }catch (Exception ignored){}
+
+
+        double exerciseDoneSeconds = 0;
+        double exerciseGoal = calculateExerciseTime(currentUser.getIntensity(), currentUser.getWeight(), currentUser.getWeightGoal());
+
+        try {
+            for (Activity activity : sharedData.getActivities()) {
+                exerciseDoneSeconds+=activity.getDuration();
+                calorieGoal+=activity.getCaloriesBurned();
+                exerciseProgress.setProgress(calorieIntake/calorieGoal);
+            }
+// Format exercise done time (hours, minutes, seconds)
+            exerciseDone.setText(
+                    (exerciseDoneSeconds >= 3600 ? (exerciseDoneSeconds / 3600) + "h " : "") +  // Show hours if greater than or equal to 3600 seconds
+                            (exerciseDoneSeconds % 3600 / 60 > 0 ? (exerciseDoneSeconds % 3600 / 60) + "m " : "") +  // Show minutes if greater than 0
+                            (exerciseDoneSeconds % 60 > 0 || exerciseDoneSeconds < 60 ? (exerciseDoneSeconds % 60) + "s" : "")  // Always show seconds unless 0
+            );
+
+// Format exercise goal time (hours, minutes, seconds)
+            exerciseTarget.setText(
+                    "Target: " +
+                            (exerciseGoal >= 3600 ? (int) (exerciseGoal / 3600) + "h " : "") +  // Show hours if greater than or equal to 3600 seconds
+                            ((int) ((exerciseGoal % 3600) / 60) > 0 ? (int) ((exerciseGoal % 3600) / 60) + "m " : "") +  // Show minutes if greater than 0
+                            (int) (exerciseGoal % 60) + "s"  // Always show seconds
+            );
+
+        }catch (Exception ignored){}
+
+        calorieDone.setText(String.format("%.2f Kcal", calorieIntake));
+        calorieTarget.setText(String.format("Target: %.2f Kcal", calorieGoal));
+        sharedData.setCalorieIntake(calorieIntake);
+        sharedData.setCalorieTarget(calorieGoal);
         sleepProgress.setProgress(0.6);
         stepProgress.setProgress(0.8); // Assuming some value for the example
 
-        double totalProgress = (calorieProgress.getProgress() + sleepProgress.getProgress() + exerciseProgress.getProgress() + stepProgress.getProgress()) / 4;
+        // Calculate total progress
+        double totalProgress = (calorieProgress.getProgress() + sleepProgress.getProgress() +
+                exerciseProgress.getProgress() + stepProgress.getProgress()) / 4;
 
         // Update the arc with the combined progress
         updateProgress(totalProgress);
-
-        // Check if user needs to update profile details
     }
+
 
     private void updateProgress(double progressPercentage) {
         double progressAngle = 360 * progressPercentage;  // Convert progress to angle
@@ -72,9 +137,6 @@ public class HomeController extends DefaultController {
 
         // Start the animation
         timeline.play();
-
-        // Update the internal progress value
-        currentProgress = progressPercentage;
     }
 
 
