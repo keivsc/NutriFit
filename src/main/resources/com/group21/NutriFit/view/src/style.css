@@ -1,0 +1,34 @@
+/* Base style for hover buttons */
+.hover-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2691de;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+}
+
+/* Hover effect */
+.hover-button:hover {
+    -fx-text-fill: #2444A5;       /* Contrast text color */
+}
+
+Text {
+    -fx-font-family: 'Cabri Light';
+}
+
+.date-picker {
+    -fx-font-size: 26px;
+}
+
+/* Define the circular border for ImageView */
+.image-circle {
+    -fx-shape: "M 1,1 L 99,1 L 99,99 L 1,99 Z"; /* This makes the shape circular */
+    -fx-background-radius: 50%; /* Makes the border radius 50% of the width/height */
+    -fx-border-color: #000000; /* Black border color */
+    -fx-border-width: 2px; /* Set border width */
+    -fx-clip-shape: true; /* Ensures that the image is clipped into a circle */
+    -fx-alignment: center; /* Centers the content */
+}
+
+#incorrect-border{
+    -fx-border-color: 'red';
+}
