@@ -17,14 +17,14 @@ public class SharedData {
         return encryptionkeys;
     }
 
-    public void setEncryptionkeys(Map<String, Object> encryption) {
-        this.encryptionkeys = encryption;
-    }
-
     private Map<String, Object> encryptionkeys;
 
     public SharedData(){
 
+    }
+
+    public void setEncryptionkeys(Map<String, Object> encryption) {
+        this.encryptionkeys = encryption;
     }
 
     public static synchronized SharedData getInstance(){

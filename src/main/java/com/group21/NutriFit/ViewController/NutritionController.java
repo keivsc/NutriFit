@@ -9,24 +9,20 @@ import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-public class HomeController extends DefaultController {
+public class NutritionController extends DefaultController {
 
     @FXML
     private Text username;
     @FXML
-    private ProgressBar calorieProgress;
+    private ProgressBar carbsProgress;
     @FXML
-    private ProgressBar sleepProgress;
+    private ProgressBar proteinProgress;
     @FXML
-    private ProgressBar exerciseProgress;
-    @FXML
-    private ProgressBar stepProgress;
+    private ProgressBar fatsProgress;
     @FXML
     private Arc progressArc;
     @FXML
-    private Label progressText;
-
-    private double currentProgress = 0; // Keeps track of the current progress
+    private Text progressText;
 
     @FXML
     private void initialize() {
@@ -37,17 +33,26 @@ public class HomeController extends DefaultController {
             switchScene("Settings");
             showPopup("Please enter your information in the Settings!");
         }
-        calorieProgress.setProgress(0.3);
-        exerciseProgress.setProgress(0.7);
-        sleepProgress.setProgress(0.6);
-        stepProgress.setProgress(0.8); // Assuming some value for the example
 
-        double totalProgress = (calorieProgress.getProgress() + sleepProgress.getProgress() + exerciseProgress.getProgress() + stepProgress.getProgress()) / 4;
+        proteinProgress.setProgress(0.3);
+        fatsProgress.setProgress(0.7);
+        carbsProgress.setProgress(0.6);
+
+        double totalProgress = (fatsProgress.getProgress() + carbsProgress.getProgress() + proteinProgress.getProgress()) / 3;
 
         // Update the arc with the combined progress
         updateProgress(totalProgress);
 
         // Check if user needs to update profile details
+        boolean needsUpdate = false;
+        if (currentUser.getWeight() == 0 || currentUser.getHeight() == 0 || currentUser.getSex() == 'N') {
+            needsUpdate = true;
+        }
+
+        if (needsUpdate) {
+            // Navigate to update page or show a prompt if needed
+            // Example: navigateToUpdatePage();
+        }
     }
 
     private void updateProgress(double progressPercentage) {
@@ -72,9 +77,6 @@ public class HomeController extends DefaultController {
 
         // Start the animation
         timeline.play();
-
-        // Update the internal progress value
-        currentProgress = progressPercentage;
     }
 
 

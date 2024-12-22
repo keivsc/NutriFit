@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class LandingController extends DefaultController {
     @FXML
@@ -33,8 +34,8 @@ public class LandingController extends DefaultController {
 
         if (email.isEmpty() || password.isEmpty()) {
             statusText.setText("Please enter your email and password.");
-            if (email.isEmpty()) emailField.setStyle("-fx-border-color:red;");
-            if (password.isEmpty()) passwordField.setStyle("-fx-border-color:red;");
+            if (email.isEmpty()) emailField.setStyle(emailField.getStyle()+"-fx-border-color:red;");
+            if (password.isEmpty()) passwordField.setStyle(passwordField.getStyle()+"-fx-border-color:red;");
             return;
         }
 
@@ -44,13 +45,14 @@ public class LandingController extends DefaultController {
             return;
         }
 
-        String keys = User.authorise(email, password);
-        if (keys == null || keys.isEmpty()) {
+        Map<String, Object> authorisationData = User.authorise(email, password);
+        if (authorisationData == null || authorisationData.isEmpty()) {
             statusText.setText("Incorrect email or password.");
             emailField.setStyle(emailField.getStyle()+"-fx-border-color:red;");
             passwordField.setStyle(passwordField.getStyle()+"-fx-border-color:red;");
         } else {
-            getSharedData().setEncryptionkeys(Encryption.parseKeys(keys));
+            getSharedData().setEncryptionkeys((Map<String, Object>) authorisationData.get("Keys"));
+            getSharedData().setCurrentUser((User) authorisationData.get("User"));
             switchScene("Home");
         }
     }

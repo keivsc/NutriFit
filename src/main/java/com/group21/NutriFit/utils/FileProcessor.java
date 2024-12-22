@@ -43,7 +43,6 @@ public class FileProcessor {
             if (file.createNewFile()) {
                 System.out.println("File created: " + filePath);
                 writeFile(filePath, base64Encode("[id]\n\n[data]"));
-                System.out.println("Written to: "+filePath);
             } else {
                 System.out.println("File already exists or could not be created: " + filePath);
             }

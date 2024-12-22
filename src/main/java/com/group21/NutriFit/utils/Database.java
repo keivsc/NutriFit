@@ -27,7 +27,7 @@ public class Database<T> {
     }
 
     // Add a record to the database
-    public void add(int id, T record) {
+    public void add(Object id, T record) {
         if (records.putIfAbsent(id, record) == null) {
             LOGGER.info("Record added with ID: " + id);
         } else {
@@ -71,7 +71,7 @@ public class Database<T> {
             data.set(1, data.get(1)+", "+ID);
         }
         for (T dataItem : records.values()) {
-            data.set(data.size()-1, dataItem.toString());
+            data.add(dataItem.toString());
         }
 
         fileProcessor.writeFileAsync(filePath, base64Encode(String.join("\n", data)));
@@ -84,7 +84,7 @@ public class Database<T> {
         }
         for (T dataItem : records.values()) {
             try {
-                data.set(data.size()-1, Encryption.encrypt(publicKey, dataItem.toString()));
+                data.add(Encryption.encrypt(publicKey, dataItem.toString()));
             } catch (Exception e) {
                 LOGGER.warning("Unable to encrypt data");
             }
@@ -100,6 +100,37 @@ public class Database<T> {
             return records.get(ID);
         }else{
             return records.get(ID);
+        }
+    }
+
+    public int getNewID() {
+        // Read the file content into a List<String>
+        List<String> fileContent = fileProcessor.readFile(filePath);
+
+        // Ensure the file content has enough lines for IDs
+        if (fileContent.size() < 2) {
+            LOGGER.warning("Insufficient data in file to generate a new ID.");
+            return 1; // Return -1 to indicate failure
+        }
+
+        // Extract user IDs from the second line
+        List<String> IDs = List.of(fileContent.get(1).split(", "));
+
+        // Ensure the IDs list is not empty
+        if (IDs.isEmpty()) {
+            LOGGER.warning("No IDs found in the file.");
+            return 1; // Return 1 as the first ID
+        }
+
+        try {
+            // Get the last ID in the list and parse it as an integer
+            int lastID = Integer.parseInt(IDs.get(IDs.size() - 1));
+
+            // Return the next ID (lastID + 1)
+            return lastID + 1;
+        } catch (NumberFormatException e) {
+            LOGGER.warning("Invalid ID format in the last entry: " + IDs.get(IDs.size() - 1));
+            return 1; // Return -1 to indicate failure
         }
     }
 

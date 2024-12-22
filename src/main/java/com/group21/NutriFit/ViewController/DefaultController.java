@@ -1,10 +1,12 @@
 package com.group21.NutriFit.ViewController;
 
 import com.group21.NutriFit.App;
-import com.group21.NutriFit.Model.User;
 import com.group21.NutriFit.utils.SharedData;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -42,9 +44,8 @@ public class DefaultController {
         controller.setStage(primaryStage);
         primaryStage.setScene(scene);
         }catch(IOException e){
-            System.out.println(e);
             Logger.getLogger(getClass().getName()).severe("Unable to find specified view");
-            System.exit(1);
+            throw new RuntimeException(e);
         }
     }
 
@@ -106,5 +107,57 @@ public class DefaultController {
     protected void addFieldStyle(TextField field, String style){
         field.setStyle(field.getStyle() + style);
     }
+
+    protected void showPopup(String content) {
+        AlertType alertType = AlertType.INFORMATION; // Default to INFORMATION
+
+        switch (1) {
+            case 1:
+                alertType = AlertType.INFORMATION;
+                break;
+            case 2:
+                alertType = AlertType.WARNING;
+                break;
+            case 3:
+                alertType = AlertType.ERROR;
+                break;
+            case 4:
+                alertType = AlertType.CONFIRMATION;
+                break;
+            default:
+                alertType = AlertType.INFORMATION;
+        }
+
+        Alert alert = new Alert(alertType);
+        alert.setTitle("INFO");
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    @FXML
+    protected void onHomeClick(){
+
+    }
+
+    @FXML
+    protected void onScanFoodClick(){
+
+    }
+
+    @FXML
+    protected void onNutritionClick(){
+        switchScene("Nutrition");
+    }
+
+    @FXML
+    protected void onWorkoutClick(){
+
+    }
+
+    @FXML
+    protected void onSettingsClick(){
+
+    }
+
 }
 

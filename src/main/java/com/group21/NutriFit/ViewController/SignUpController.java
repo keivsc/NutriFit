@@ -1,7 +1,6 @@
 package com.group21.NutriFit.ViewController;
 
 import com.group21.NutriFit.Model.User;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -107,6 +106,7 @@ public class SignUpController extends DefaultController {
         switch(createStatus){
             case 0:
                 statusText.setText("Account Created");
+                showPopup("Your account has been created at: "+emailField.getText());
                 switchScene("Landing");
                 break;
             case 1:

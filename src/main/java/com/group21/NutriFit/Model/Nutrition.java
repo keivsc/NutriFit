@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Nutrition extends BaseModel<Nutrition>{
     private int nutritionID;
+    private int target;
     private double calorieIntake;
     private double protein;  // Grams of protein
     private double fiber;    // Grams of fiber
@@ -24,6 +25,14 @@ public class Nutrition extends BaseModel<Nutrition>{
     }
 
     // Getters and setters
+    public int getTarget() {
+        return target;
+    }
+
+    public void setTarget(int target) {
+        this.target = target;
+    }
+
     public int getNutritionID() {
         return nutritionID;
     }
