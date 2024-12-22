@@ -10,10 +10,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 import static com.group21.NutriFit.utils.Utils.base64Encode;
 
@@ -167,6 +164,18 @@ public class Encryption {
         }
 
         return byteArray;
+    }
+
+    public static Map<String, Object> parseKeys(String key){
+        String[] keys = key.split("[br]");
+        Map<String, Object> encryptionMap = new HashMap<>();
+        try {
+            encryptionMap.put("PublicKey", stringToPublic(keys[0]));
+            encryptionMap.put("PrivateKey", stringToPublic(keys[1]));
+        } catch (Exception e) {
+            return null;
+        }
+        return encryptionMap;
     }
 
 }

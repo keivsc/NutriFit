@@ -41,6 +41,7 @@ public class FileProcessor {
             File file = new File(filePath);
             if (file.createNewFile()) {
                 System.out.println("File created: " + filePath);
+                writeFile(filePath, "[id]\n\n[data]");
             } else {
                 System.out.println("File already exists or could not be created: " + filePath);
             }

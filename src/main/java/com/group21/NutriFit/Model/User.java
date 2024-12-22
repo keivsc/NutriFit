@@ -1,12 +1,14 @@
 package com.group21.NutriFit.Model;
 
+import com.group21.NutriFit.utils.Database;
+
 import java.security.PublicKey;
 import java.security.PrivateKey;
 
 public class User extends BaseModel<User> {
+    private final String filePath = "./data/users.dat";
     private String name;
     private String email;
-    private int pNo;
     private int height;
     private int weight;
     private char sex;
@@ -15,11 +17,10 @@ public class User extends BaseModel<User> {
     private PublicKey publicKey;
     private PrivateKey privateKey;
 
-    public User(int userID, String name, String email, int pNo, int height, int weight, char sex, byte[] profilePic, boolean isPublic) {
+    public User(int userID, String name, String email, int height, int weight, char sex, byte[] profilePic, boolean isPublic) {
         super(userID);
         this.name = name;
         this.email = email;
-        this.pNo = pNo;
         this.height = height;
         this.weight = weight;
         this.sex = sex;
@@ -41,14 +42,6 @@ public class User extends BaseModel<User> {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public int getpNo() {
-        return pNo;
-    }
-
-    public void setpNo(int pNo) {
-        this.pNo = pNo;
     }
 
     public int getHeight() {
@@ -113,7 +106,6 @@ public class User extends BaseModel<User> {
                 userID +
                 ", " + name +
                 ", " + email +
-                ", " + pNo +
                 ", " + height +
                 ", " + weight +
                 ", " + sex +
@@ -144,7 +136,7 @@ public class User extends BaseModel<User> {
                 profilePic = data[8].trim().getBytes();
             }
 
-            return new User(userID, name, email, pNo, height, weight, sex, profilePic, isPublic);
+            return new User(userID, name, email, height, weight, sex, profilePic, isPublic);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid number format in input string: " + string, e);
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -152,5 +144,10 @@ public class User extends BaseModel<User> {
         } catch (Exception e) {
             throw new RuntimeException("Error parsing User from string: " + string, e);
         }
+    }
+
+    public static String authorise(String email, String password){
+        Database<String> db = new Database<String>("keys.dat");
+        return db.get(email.hashCode());
     }
 }

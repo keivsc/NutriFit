@@ -9,20 +9,20 @@ import java.util.logging.Logger;
 import static com.group21.NutriFit.utils.Utils.base64Decode;
 import static com.group21.NutriFit.utils.Utils.base64Encode;
 
-public abstract class Database<T> {
+public class Database<T> {
     private static final Logger LOGGER = Logger.getLogger(Database.class.getName());
     protected final FileProcessor fileProcessor = new FileProcessor();
     protected final Map<Integer, T> records = new ConcurrentHashMap<>(); // Thread-safe storage for records
     protected final String filePath;
 
-    protected Database(String filePath) {
+    public Database(String filePath) {
         this.filePath = filePath;
         initializeFile(filePath);
     }
 
     // Initialize the database file
     protected void initializeFile(String filePath) {
-        // Implementation for file initialization if needed
+        fileProcessor.createFile(filePath, false);
         LOGGER.info("Database file initialized: " + filePath);
     }
 
@@ -35,10 +35,6 @@ public abstract class Database<T> {
         }
     }
 
-    // Retrieve a record by its ID
-    public T get(int id) {
-        return records.get(id);
-    }
 
     // Update an existing record
     public void update(int id, T updatedRecord) {
@@ -71,8 +67,8 @@ public abstract class Database<T> {
 
     public void pushData(){
         List<String> data = new ArrayList<>(fileProcessor.readFile(filePath));
-        for (Integer userID : records.keySet()) {
-            data.set(1, data.get(1)+", "+userID);
+        for (Integer ID : records.keySet()) {
+            data.set(1, data.get(1)+", "+ID);
         }
         for (T dataItem : records.values()) {
             data.set(data.size()-1, dataItem.toString());
@@ -83,8 +79,8 @@ public abstract class Database<T> {
 
     public void pushDataEncrypted(PublicKey publicKey){
         List<String> data = new ArrayList<>(fileProcessor.readFile(filePath));
-        for (Integer userID : records.keySet()) {
-            data.set(1, data.get(1)+", "+userID);
+        for (Integer ID : records.keySet()) {
+            data.set(1, data.get(1)+", "+ID);
         }
         for (T dataItem : records.values()) {
             try {
@@ -97,36 +93,31 @@ public abstract class Database<T> {
         fileProcessor.writeFileAsync(filePath, base64Encode(String.join("\n", data)));
     }
 
-    public void getData(int userID){
-        if(userID==-1){
-            renewData();
+    public T get(int ID){
+        if(records.isEmpty()){
+            renewData(ID);
         }else{
-
+            return records.get(ID);
         }
+        return null;
     }
 
 
-    public void renewData() {
+    public void renewData(int id) {
         // Read the file content into a List<String> (already decoded)
         List<String> fileContent = fileProcessor.readFile(filePath);
 
         // Extract user IDs and data
-        String[] userIDs = fileContent.get(1).split(", "); // User IDs are on the second line
-        List<String> dataList = new ArrayList<>(fileContent.subList(3, fileContent.size())); // Data starts from the fourth line
-
-        // Ensure userIDs and dataList have the same size
-        if (userIDs.length == dataList.size()) {
-            for (int i = 0; i < userIDs.length; i++) {
-                records.put(Integer.parseInt(userIDs[i]), (T) dataList.get(i));  // Assuming T is String
-            }
-            LOGGER.info("Data has been successfully renewed.");
-        } else {
-            LOGGER.warning("Mismatch between user IDs and data.");
+        List<String> IDs = List.of(fileContent.get(1).split(", ")); // User IDs are on the second line
+        int IDIndex = IDs.indexOf(String.valueOf(id));
+        if(IDIndex!=-1){
+            records.put(id, (T) fileContent.get(IDIndex+2));
         }
+        
     }
 
     // Log and throw an exception with a message
-    protected void logAndThrow(String message, Exception e) {
+    protected void logAndThrow(String message, Exception e) {   
         LOGGER.log(Level.SEVERE, message, e);
         throw new RuntimeException(message, e);
     }

@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.group21.NutriFit.Model.Nutrition;
 
-public class ScannerController {
+public class ScannerController extends DefaultController {
 
     private static List<String> getFoodName(byte[] imageData) {
         try {

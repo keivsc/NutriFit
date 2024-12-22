@@ -8,10 +8,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class DefaultController {
-    private User user;
-    private Byte profilePicture;
     private static SharedData sharedData;
     private static Stage primaryStage;
 
@@ -27,12 +26,20 @@ public class DefaultController {
         primaryStage = stage;
     }
 
-    public void switchScene(String sceneName) throws IOException {
+    public void switchScene(String sceneName)  {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("view/" + sceneName + ".fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        try {
+            Scene scene = new Scene(fxmlLoader.load());
+
         DefaultController controller = fxmlLoader.getController();
+        scene.getStylesheets().add(App.class.getResource("/com/group21/nutrifit/view/src/style.css").toExternalForm());
         controller.setStage(primaryStage);
         primaryStage.setScene(scene);
+        }catch(IOException e){
+            System.out.println(e);
+            Logger.getLogger(getClass().getName()).severe("Unable to find specified view");
+            System.exit(1);
+        }
     }
 
     public void showNavBar(boolean status){

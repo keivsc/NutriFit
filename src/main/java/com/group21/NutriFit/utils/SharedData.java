@@ -5,12 +5,23 @@ import com.group21.NutriFit.Model.Goal;
 import com.group21.NutriFit.Model.User;
 
 import java.util.List;
+import java.util.Map;
 
 public class SharedData {
     private static SharedData sharedInstance;
     private User currentUser = null;
     private List<Activity> activities = null;
     private List<Goal> goals = null;
+
+    public Map<String, Object> getEncryptionkeys() {
+        return encryptionkeys;
+    }
+
+    public void setEncryptionkeys(Map<String, Object> encryption) {
+        this.encryptionkeys = encryption;
+    }
+
+    private Map<String, Object> encryptionkeys;
 
     public SharedData(){
 
